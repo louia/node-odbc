@@ -111,7 +111,7 @@ class PrepareAsyncWorker : public ODBCAsyncWorker {
 
       SQLRETURN return_code;
 
-      return_code = SQLPrepare
+      return_code = SQLPrepareW
       (
         data->hstmt, // StatementHandle
         data->sql,   // StatementText
@@ -198,7 +198,7 @@ Napi::Value ODBCStatement::Prepare(const Napi::CallbackInfo& info) {
     return env.Undefined();
   }
 
-  data->sql = ODBC::NapiStringToSQLTCHAR(sql);
+  data->sql = ODBC::NapiStringToSQLWCHAR(sql);
 
   PrepareAsyncWorker *worker = new PrepareAsyncWorker(this, callback);
   worker->Queue();

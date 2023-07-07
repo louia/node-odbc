@@ -784,7 +784,7 @@ class QueryAsyncWorker : public ODBCAsyncWorker {
         if (data->parameterCount > 0) {
           // binds all parameters to the query
           return_code =
-          SQLPrepare
+          SQLPrepareW
           (
             data->hstmt,
             data->sql,
@@ -839,7 +839,7 @@ class QueryAsyncWorker : public ODBCAsyncWorker {
         // querying without parameters, can just use SQLExecDirect
         else {
           return_code =
-          SQLExecDirect
+          SQLExecDirectW
           (
             data->hstmt,
             data->sql,
@@ -1081,7 +1081,7 @@ Napi::Value ODBCConnection::Query(const Napi::CallbackInfo& info) {
 
   // Store the SQL query string in the data structure
   Napi::String sql = info[0].ToString();
-  data->sql = ODBC::NapiStringToSQLTCHAR(sql);
+  data->sql = ODBC::NapiStringToSQLWCHAR(sql);
 
   // Store the callback function to call at the end of the AsyncWorker
   Napi::Function callback = info[3].As<Napi::Function>();
@@ -1852,7 +1852,7 @@ class CallProcedureAsyncWorker : public ODBCAsyncWorker {
 
       // 13 non-template characters in { CALL %s (%s) }\0
       size_t sqlStringSize = 1024 + parameterStringSize + sizeof("{ CALL  () }");
-      data->sql = new SQLTCHAR[sqlStringSize];
+      data->sql = new SQLWCHAR[sqlStringSize];
 #ifndef UNICODE
       sprintf((char *)data->sql, "{ CALL %s (%s) }", combinedProcedureName, parameterString);
 #else
@@ -1871,7 +1871,7 @@ class CallProcedureAsyncWorker : public ODBCAsyncWorker {
         1
       );
 
-      return_code = SQLExecDirect(
+      return_code = SQLExecDirectW(
         data->hstmt, // StatementHandle
         data->sql,   // StatementText
         SQL_NTS      // TextLength
