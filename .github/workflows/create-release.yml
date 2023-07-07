@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: windows-binaries
-        path: build/stage/*.tar.gz
+        path: build/stage/@presightio/*.tar.gz
 
   build-macos:
 
@@ -57,7 +57,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: macos-binaries
-        path: build/stage/*.tar.gz
+        path: build/stage/@presightio/*.tar.gz
 
   build-linux:
 
@@ -84,7 +84,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: linux-binaries
-        path: build/stage/*.tar.gz
+        path: build/stage/@presightio/*.tar.gz
 
   create-release:
 
