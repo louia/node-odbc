@@ -1,5 +1,5 @@
 {
-  "name": "@presightio/odbc",
+  "name": "louia/odbc",
   "description": "unixodbc bindings for node",
   "version": "2.4.9",
   "homepage": "http://github.com/markdirish/node-odbc/",
@@ -7,7 +7,7 @@
   "types": "lib/odbc.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/PresightIO/node-odbc"
+    "url": "git://github.com/louia/node-odbc"
   },
   "bugs": {
     "url": "https://github.com/markdirish/node-odbc/issues"
@@ -54,7 +54,7 @@
   "binary": {
     "module_name": "odbc",
     "module_path": "./lib/bindings/napi-v{napi_build_version}",
-    "host": "https://github.com/PresightIO/node-odbc/releases/download/v{version}",
+    "host": "https://github.com/louia/node-odbc/releases/download/v{version}",
     "package_name": "{name}-v{version}-{platform}-{arch}-napi-v{napi_build_version}.tar.gz",
     "napi_versions": [
       3,
