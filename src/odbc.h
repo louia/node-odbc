@@ -218,7 +218,7 @@ typedef struct StatementData {
   bool                        fetch_array   = false;
 
   // query options
-  SQLWCHAR *sql       = NULL;
+  SQLTCHAR *sql       = NULL;
   SQLTCHAR *catalog   = NULL;
   SQLTCHAR *schema    = NULL;
   SQLTCHAR *table     = NULL;
@@ -323,7 +323,6 @@ class ODBC {
     static Napi::Value Init(Napi::Env env, Napi::Object exports);
 
     static SQLTCHAR* NapiStringToSQLTCHAR(Napi::String string);
-    static SQLWCHAR* NapiStringToSQLWCHAR(Napi::String string);
 
     static void StoreBindValues(Napi::Array *values, Parameter **parameters);
 

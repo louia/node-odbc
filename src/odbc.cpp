@@ -371,7 +371,7 @@ class ConnectAsyncWorker : public ODBCAsyncWorker {
 
   private:
 
-    SQLWCHAR *connectionStringPtr;
+    SQLTCHAR *connectionStringPtr;
     ConnectionOptions *options;
     GetInfoResults     get_info_results;
 
@@ -447,7 +447,7 @@ class ConnectAsyncWorker : public ODBCAsyncWorker {
 
       //Attempt to connect
       return_code =
-      SQLDriverConnectW
+      SQLDriverConnect
       (
         hDBC,                // ConnectionHandle
         NULL,                // WindowHandle
@@ -569,7 +569,7 @@ class ConnectAsyncWorker : public ODBCAsyncWorker {
     }
 
   public:
-    ConnectAsyncWorker(HENV hEnv, SQLWCHAR *connectionStringPtr, ConnectionOptions *options, Napi::Function& callback) : ODBCAsyncWorker(callback),
+    ConnectAsyncWorker(HENV hEnv, SQLTCHAR *connectionStringPtr, ConnectionOptions *options, Napi::Function& callback) : ODBCAsyncWorker(callback),
       connectionStringPtr(connectionStringPtr),
       options(options),
       hEnv(hEnv) {}
@@ -589,7 +589,7 @@ Napi::Value ODBC::Connect(const Napi::CallbackInfo& info) {
   Napi::String connectionString;
   Napi::Function callback;
 
-  SQLWCHAR *connectionStringPtr = nullptr;
+  SQLTCHAR *connectionStringPtr = nullptr;
 
   ConnectionOptions *options = new ConnectionOptions();
   options->connectionTimeout = 0;
@@ -603,12 +603,12 @@ Napi::Value ODBC::Connect(const Napi::CallbackInfo& info) {
 
   if (info[0].IsString()) {
     connectionString = info[0].As<Napi::String>();
-    connectionStringPtr = ODBC::NapiStringToSQLWCHAR(connectionString);
+    connectionStringPtr = ODBC::NapiStringToSQLTCHAR(connectionString);
   } else if (info[0].IsObject()) {
     Napi::Object connectionObject = info[0].As<Napi::Object>();
     if (connectionObject.Has("connectionString") && connectionObject.Get("connectionString").IsString()) {
       connectionString = connectionObject.Get("connectionString").As<Napi::String>();
-      connectionStringPtr = ODBC::NapiStringToSQLWCHAR(connectionString);
+      connectionStringPtr = ODBC::NapiStringToSQLTCHAR(connectionString);
     } else {
       Napi::TypeError::New(env, "connect: A configuration object must have a 'connectionString' property that is a string.").ThrowAsJavaScriptException();
       return env.Null();
@@ -659,22 +659,6 @@ SQLTCHAR* ODBC::NapiStringToSQLTCHAR(Napi::String string) {
     byteCount = tempString.length() + 1;
   #endif
   SQLTCHAR *sqlString = new SQLTCHAR[byteCount];
-  std::memcpy(sqlString, tempString.c_str(), byteCount);
-  return sqlString;
-}
-
-SQLWCHAR* ODBC::NapiStringToSQLWCHAR(Napi::String string) {
-
-  size_t byteCount = 0;
-
-  #ifdef UNICODE
-    std::u16string tempString = string.Utf16Value();
-    byteCount = (tempString.length() + 1) * 2;
-  #else
-    std::u16string tempString = string.Utf16Value();
-    byteCount = (tempString.length() + 1) * 2;
-  #endif
-  SQLWCHAR *sqlString = new SQLWCHAR[byteCount];
   std::memcpy(sqlString, tempString.c_str(), byteCount);
   return sqlString;
 }

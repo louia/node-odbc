@@ -1,5 +1,5 @@
 {
-  "name": "louia/odbc",
+  "name": "odbc",
   "description": "unixodbc bindings for node",
   "version": "2.4.10",
   "homepage": "http://github.com/markdirish/node-odbc/",
